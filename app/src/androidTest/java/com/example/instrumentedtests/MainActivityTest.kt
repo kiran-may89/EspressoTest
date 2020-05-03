@@ -1,6 +1,10 @@
 package com.example.instrumentedtests
 
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -10,21 +14,18 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-class SecondActivityTest {
+class MainActivityTest {
 
     @get:Rule
-    val activityRule = ActivityScenarioRule(SecondActivity::class.java)
-
+    val activityRule = ActivityScenarioRule(MainActivity::class.java)
     @Test
-    fun test_allElementsVisible(){
-        onView(withId(R.id.secondary)).check(matches(isDisplayed()))
+    fun test_navigateSecondActivity() {
+
+        onView(withId(R.id.activity_main_title)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        onView(withId(R.id.button_next_activity)).perform(click())
         onView(withId(R.id.activity_secondary_title)).check(matches(isDisplayed()))
         onView(withId(R.id.button_back)).check(matches(isDisplayed()))
+        pressBack()
+    }
 
-    }
-    @Test
-    fun test_textMatches(){
-        onView(withId(R.id.activity_secondary_title)).check(matches(withText(R.string.text_secondaryactivity)))
-        onView(withId(R.id.button_back)).check(matches(withText(R.string.text_back)))
-    }
 }
