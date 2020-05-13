@@ -9,6 +9,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import com.example.instrumentedtests.MainActivity.Companion.buildToastMessage
 import org.hamcrest.Matcher
 import org.junit.Rule
 import org.junit.Test
@@ -30,6 +31,9 @@ class MainActivityTest {
         onView(withText(R.string.text_ok)).perform(click())
         onView(withText(R.string.text_enter_name)).check(doesNotExist())
         onView(withId(R.id.text_name)).check(matches(withText("Tested")))
+        onView(withText(buildToastMessage("Tested")))
+            .inRoot(ToastMatcher())
+            .check(matches(isDisplayed()))
 
     }
 }

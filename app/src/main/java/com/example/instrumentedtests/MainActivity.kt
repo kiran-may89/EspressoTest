@@ -1,6 +1,7 @@
 package com.example.instrumentedtests
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity(){
                     allowEmpty = false
                 ){ dialog, name ->
                     setNameToTextView(name.toString())
+                    showToast(name.toString())
                 }
                 title(R.string.text_enter_name)
                 positiveButton(R.string.text_ok)
@@ -37,6 +39,15 @@ class MainActivity : AppCompatActivity(){
 
     private fun setNameToTextView(name: String){
         text_name.text = name
+    }
+    companion object{
+        fun buildToastMessage(str:String):String=
+            "Your Name is $str"
+
+    }
+    fun showToast( name:String){
+        Toast.makeText(this, buildToastMessage(name),Toast.LENGTH_LONG).show()
+
     }
 
 }
