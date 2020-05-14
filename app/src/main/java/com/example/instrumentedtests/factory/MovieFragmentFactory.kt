@@ -1,11 +1,17 @@
 package com.example.instrumentedtests.factory
 
 import androidx.fragment.app.FragmentFactory
+import com.bumptech.glide.request.RequestOptions
+import com.example.instrumentedtests.data.source.MoviesDataSource
 import com.example.instrumentedtests.fragments.DirectorsFragment
 import com.example.instrumentedtests.fragments.MovieDetailFragment
+import com.example.instrumentedtests.fragments.MovieListFragment
 import com.example.instrumentedtests.fragments.StarActorsFragment
 
-class MovieFragmentFactory : FragmentFactory(){
+class MovieFragmentFactory(
+    private val requestOptions: RequestOptions? = null,
+    private val moviesDataSource: MoviesDataSource? = null
+) : FragmentFactory(){
 
     private val TAG: String = "AppDebug"
 
@@ -13,8 +19,25 @@ class MovieFragmentFactory : FragmentFactory(){
 
         when(className){
 
+            MovieListFragment::class.java.name -> {
+                if (moviesDataSource != null) {
+                    MovieListFragment(moviesDataSource)
+                } else {
+                    super.instantiate(classLoader, className)
+                }
+            }
+
             MovieDetailFragment::class.java.name -> {
-                MovieDetailFragment()
+                if(requestOptions != null
+                    && moviesDataSource != null){
+                    MovieDetailFragment(
+                        requestOptions,
+                        moviesDataSource
+                    )
+                }
+                else{
+                    super.instantiate(classLoader, className)
+                }
             }
 
             DirectorsFragment::class.java.name -> {
@@ -29,6 +52,5 @@ class MovieFragmentFactory : FragmentFactory(){
                 super.instantiate(classLoader, className)
             }
         }
-
 
 }

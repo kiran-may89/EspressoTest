@@ -6,12 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.instrumentedtests.R
 import com.example.instrumentedtests.data.Movie
+import com.example.instrumentedtests.data.source.MoviesDataSource
 import com.example.instrumentedtests.data.source.MoviesRemoteDataSource
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 
-class MovieDetailFragment : Fragment(){
+class MovieDetailFragment
+constructor(
+    val requestOptions: RequestOptions,
+    val moviesDataSource: MoviesDataSource
+): Fragment(){
 
     private lateinit var movie: Movie
 
@@ -25,7 +31,7 @@ class MovieDetailFragment : Fragment(){
         super.onCreate(savedInstanceState)
         arguments?.let { args ->
             args.getInt("movie_id").let{ movieId ->
-                MoviesRemoteDataSource.getMovie(movieId)?.let{ movieFromRemote ->
+                moviesDataSource.getMovie(movieId)?.let{ movieFromRemote ->
                     movie = movieFromRemote
                 }
             }

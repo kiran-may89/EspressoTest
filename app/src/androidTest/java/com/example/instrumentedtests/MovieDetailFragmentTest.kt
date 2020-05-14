@@ -8,7 +8,9 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.example.instrumentedtests.data.DummyMovies.THE_RUNDOWN
+
+import com.example.instrumentedtests.data.source.MoviesDataSource
+import com.example.instrumentedtests.data.source.MoviesRemoteDataSource
 import com.example.instrumentedtests.factory.MovieFragmentFactory
 import com.example.instrumentedtests.fragments.MovieDetailFragment
 import org.junit.Test
@@ -17,13 +19,13 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class MovieDetailFragmentTest{
-
+val dataSource = MoviesRemoteDataSource()
     @Test
     fun test_MovieDetails() {
         val factory = MovieFragmentFactory()
-        val movie = THE_RUNDOWN
+        val movie = dataSource.getMovie(1)
         val bundle = Bundle()
-        bundle.putInt("movie_id", movie.id)
+        bundle.putInt("movie_id", movie!!.id)
         val scenario = launchFragmentInContainer<MovieDetailFragment>(
             fragmentArgs = bundle,
             factory = factory
